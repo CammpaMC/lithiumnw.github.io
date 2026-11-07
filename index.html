@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lithium NW - Türkiye'nin En Muq Minecraft Sunucusu</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --text: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+        }
+
+        .ip-box {
+            background: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary);
+            transition: transform 0.2s;
+        }
+
+        .ip-box:hover {
+            transform: scale(1.05);
+        }
+
+        /* Layout Main */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero / Ana Sayfa */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #00d2ff, #92fe9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .yt-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ff0000;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        /* Grid Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .card .price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0f172a;
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        th {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Toast Popup */
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #090d16;
+            color: #64748b;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-cube"></i> Lithium NW
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')" id="link-home" class="active">Ana Sayfa</a></li>
+                <li><a onclick="showPage('store')" id="link-store">Mağaza</a></li>
+                <li><a onclick="showPage('bans')" id="link-bans">Cezalar</a></li>
+                <li><a onclick="showPage('apply')" id="link-apply">Yetkili Başvuru</a></li>
+            </ul>
+            <div class="ip-box" onclick="copyIP()">
+                <i class="fa-solid fa-copy"></i> oyna.lithium.nw
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ANA SAYFA -->
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <a href="https://youtube.com" target="_blank" class="yt-badge">
+                    <i class="fa-brands fa-youtube"></i> TurşuAdam (3M+ Abone)
+                </a>
+                <h1>Lithium NW Network</h1>
+                <p>Ciddiyeti bir kenara bıraktık, muazzam eğlencenin adresini kurduk! Türkiye'nin en muq Minecraft sunucusunda sen de yerini al.</p>
+                <button class="btn" style="max-width: 200px; margin: 0 auto;" onclick="showPage('store')">Hemen Alışverişe Başla</button>
+            </div>
+
+            <h2 style="margin-bottom: 1rem;">Neden Lithium NW?</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3><i class="fa-solid fa-bolt"></i> Muq Performans</h3>
+                    <p>Sıfır kasma, yüksek TPS ve TurşuAdam garantisiyle sorunsuz bir oyun deneyimi!</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-shield-halved"></i> 7/24 Aktif Korumalar</h3>
+                    <p>Hilelere ve trollere geçit yok. Ekibimiz anında müdahale ediyor.</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fa-solid fa-crown"></i> Özel Etkinlikler</h3>
+                    <p>Her hafta sonu devasa ödüllü turnuvalar ve özel çekilişler!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAĞAZA -->
+        <section id="store" class="page-section">
+            <h2 style="margin-bottom: 0.5rem;">Sunucu Mağazası</h2>
+            <p style="color: #94a3b8; margin-bottom: 1.5rem;">VIP alarak sunucunun gelişimine katkıda bulunabilir ve efsane özellikler kazanabilirsin.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>VIP</h3>
+                    <p>Oyuna hızlı giriş, /fly yetkisi, renkli chat ve VIP kiti!</p>
+                    <div class="price">50 ₺</div>
+                    <button class="btn" onclick="buyItem('VIP Package')">Satın Al</button>
+                </div>
+                <div class="card">
+                    <h3>VIP+</h3>
+                    <p>VIP özelliklerine ek olarak sanal çalışma masası, 3 ek ev hakkı ve özel VIP+ kostümü.</p>
+                    <div class="price">100 ₺</div>
+                    <button class="btn" onclick="buyItem('VIP+ Package')">Satın Al</button>
+                </div>
+                <div class="card" style="border: 1px solid var(--primary);">
+                    <div style="position:absolute; top:0; right:0; background:var(--primary); color:#000; font-weight:bold; font-size:0.7rem; padding:0.2rem 0.5rem; border-bottom-left-radius:8px;">POPÜLER</div>
+                    <h3>LITHIUM VIP</h3>
+                    <p>Sunucunun ağası ol! Özel efektler, kurucuyla sohbet imkanı, devasa kit ve sınırsız ev hakkı!</p>
+                    <div class="price">200 ₺</div>
+                    <button class="btn" onclick="buyItem('Lithium VIP Package')">Satın Al</button>
+                </div>
+                <div class="card">
+                    <h3>100.000 Oyun Parası</h3>
+                    <p>Ekonomide hızlıca öne geçmek için harika bir takviye paketi.</p>
+                    <div class="price">25 ₺</div>
+                    <button class="btn" onclick="buyItem('100k Money')">Satın Al</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CEZALAR -->
+        <section id="bans" class="page-section">
+            <h2 style="margin-bottom: 1.5rem;">Son Cezalar & Ban Listesi</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Oyuncu</th>
+                        <th>Caza Tipi</th>
+                        <th>Sebep</th>
+                        <th>Süre</th>
+                        <th>Yetkili</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Hileci_Pro_31</strong></td>
+                        <td><span class="badge-danger">BAN</span></td>
+                        <td>Killaura / Fly Hilesi</td>
+                        <td>Sınırsız</td>
+                        <td>Hyperion Ekibi</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TrollKral</strong></td>
+                        <td><span class="badge-danger">MUTE</span></td>
+                        <td>Chatte Küfür / Saygısızlık</td>
+                        <td>3 Gün</td>
+                        <td>TurşuAdamBot</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Steve_007</strong></td>
+                        <td><span class="badge-danger">BAN</span></td>
+                        <td>Sunucu Reklamı Yapmak</td>
+                        <td>30 Gün</td>
+                        <td>Hyperion Ekibi</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- BAŞVURU -->
+        <section id="apply" class="page-section">
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <h2 style="margin-bottom: 0.5rem;">Yetkili Başvuru Formu</h2>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">Ekibimize katılmak ister misin? Formu doldur, direkt olarak <strong>hyperionpmodekibi@gmail.com</strong> adresine iletilsin!</p>
+                
+                <form id="applyForm" onsubmit="sendApplication(event)">
+                    <div class="form-group">
+                        <label>Minecraft Kullanıcı Adın</label>
+                        <input type="text" id="username" required placeholder="Örn: TursuAdam">
+                    </div>
+                    <div class="form-group">
+                        <label>Yaşın</label>
+                        <input type="number" id="age" required placeholder="Örn: 17">
+                    </div>
+                    <div class="form-group">
+                        <label>Başvurmak İstediğin Pozisyon</label>
+                        <select id="role">
+                            <option value="Rehber">Rehber</option>
+                            <option value="Moderator">Moderatör</option>
+                            <option value="Mimar">Mimar (Builder)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Neden Seni Seçmeliyiz? (Tecrübelerin)</label>
+                        <textarea id="experience" rows="4" required placeholder="Kendinden ve tecrübelerinden bahset..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Başvuruyu Gönder</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Lithium NW. Tüm hakları saklıdır. TurşuAdam Güvencesiyle!</p>
+    </footer>
+
+    <div id="toast">IP Kopyalandı!</div>
+
+    <script>
+        // Sayfa Değiştirme Mantığı
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('link-' + pageId).classList.add('active');
+        }
+
+        // IP Kopyalama Mantığı
+        function copyIP() {
+            navigator.clipboard.writeText('oyna.lithium.nw');
+            showToast('Sunucu IP adresi kopyalandı: oyna.lithium.nw');
+        }
+
+        // Mağaza Buton Mantığı
+        function buyItem(itemName) {
+            const username = prompt("Lütfen Minecraft kullanıcı adınızı girin:");
+            if (username) {
+                alert(`Teşekkürler ${username}! '${itemName}' ödeme sayfasına yönlendiriliyorsunuz...`);
+            }
+        }
+
+        // Başvuru Formu Gönderme (Mailto Entegrasyonu)
+        function sendApplication(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const age = document.getElementById('age').value;
+            const role = document.getElementById('role').value;
+            const experience = document.getElementById('experience').value;
+
+            const targetMail = "hyperionpmodekibi@gmail.com";
+            const subject = encodeURIComponent(`Yetkili Başvurusu: ${username} (${role})`);
+            const body = encodeURIComponent(
+                `Kullanıcı Adı: ${username}\n` +
+                `Yaş: ${age}\n` +
+                `İstenen Pozisyon: ${role}\n\n` +
+                `Açıklama / Tecrübeler:\n${experience}`
+            );
+
+            // Mail İstemcisini Açma
+            window.location.href = `mailto:${targetMail}?subject=${subject}&body=${body}`;
+            
+            showToast('E-posta uygulamanız açılıyor!');
+            document.getElementById('applyForm').reset();
+        }
+
+        // Bildirim Toast Gösterimi
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
